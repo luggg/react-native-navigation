@@ -7,6 +7,12 @@ import Screen from './Screen';
 import PropRegistry from './PropRegistry';
 
 const registeredScreens = {};
+const _routeResolver = null;
+
+function resolveRoute(params) {
+  if (!_routeResolver) return params;
+  return _routeResolver(params);
+}
 
 function registerScreen(screenID, generator) {
   registeredScreens[screenID] = generator;
@@ -123,14 +129,18 @@ function dismissInAppNotification(params = {}) {
 }
 
 function startTabBasedApp(params) {
+  if (params.routeResolver) _routeResolver = params.routeResolver;
   return platformSpecific.startTabBasedApp(params);
 }
 
 function startSingleScreenApp(params) {
+  if (params.routeResolver) _routeResolver = params.routeResolver;
   return platformSpecific.startSingleScreenApp(params);
 }
 
 export default {
+  resolveRoute,
+  registerScreen,
   getRegisteredScreen,
   registerComponent,
   showModal: showModal,
