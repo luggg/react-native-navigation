@@ -26,27 +26,27 @@ class Navigator {
   }
 
   push(params = {}) {
-    return NavigationSpecific.push(this, params);
+    return NavigationSpecific.push(this, Navigation.resolveRoute(params));
   }
 
   pop(params = {}) {
-    return NavigationSpecific.pop(this, params);
+    return NavigationSpecific.pop(this, Navigation.resolveRoute(params));
   }
 
   popToRoot(params = {}) {
-    return NavigationSpecific.popToRoot(this, params);
+    return NavigationSpecific.popToRoot(this, Navigation.resolveRoute(params));
   }
 
   resetTo(params = {}) {
-    return NavigationSpecific.resetTo(this, params);
+    return NavigationSpecific.resetTo(this, Navigation.resolveRoute(params));
   }
 
   showModal(params = {}) {
-    return Navigation.showModal(params);
+    return Navigation.showModal(Navigation.resolveRoute(params));
   }
 
   dismissModal(params = {}) {
-    return Navigation.dismissModal(params);
+    return Navigation.dismissModal(Navigation.resolveRoute(params));
   }
 
   dismissAllModals(params = {}) {
@@ -70,11 +70,11 @@ class Navigator {
   }
 
   setButtons(params = {}) {
-    return platformSpecific.navigatorSetButtons(this, this.navigatorEventID, params);
+    return platformSpecific.navigatorSetButtons(this, this.navigatorEventID, Navigation.resolveRoute(params));
   }
 
   setTitle(params = {}) {
-    return platformSpecific.navigatorSetTitle(this, params);
+    return platformSpecific.navigatorSetTitle(this, Navigation.resolveRoute(params));
   }
 
   setTitleImage(params = {}) {
@@ -82,7 +82,7 @@ class Navigator {
   }
 
   toggleDrawer(params = {}) {
-    return platformSpecific.navigatorToggleDrawer(this, params);
+    return platformSpecific.navigatorToggleDrawer(this, Navigation.resolveRoute(params));
   }
 
   toggleTabs(params = {}) {
