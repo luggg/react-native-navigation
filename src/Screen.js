@@ -1,4 +1,5 @@
-import { Component, NativeAppEventEmitter } from 'react-native';
+import React, { Component } from 'react';
+import { NativeAppEventEmitter } from 'react-native';
 import platformSpecific from './platformSpecific';
 import Navigation from './Navigation';
 
