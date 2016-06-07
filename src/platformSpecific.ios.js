@@ -1,13 +1,13 @@
 import utils from './utils';
 import Navigation from './Navigation';
 import Controllers, { Modal } from 'react-native-controllers';
-const ReactNative = Controllers.hijackReact();
+const React = Controllers.hijackReact();
 const {
   ControllerRegistry,
   TabBarControllerIOS,
   NavigationControllerIOS,
   DrawerControllerIOS
-} = ReactNative;
+} = React;
 
 function startTabBasedApp(params) {
   if (!params.tabs) {
