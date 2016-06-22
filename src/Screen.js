@@ -36,6 +36,9 @@ class Navigator {
   setTitle(params = {}) {
     return platformSpecific.navigatorSetTitle(this, Navigation.resolveRoute(params));
   }
+  setTitleImage(params = {}) {
+    return platformSpecific.navigatorSetTitleImage(this, params);
+  }
   toggleDrawer(params = {}) {
     return platformSpecific.navigatorToggleDrawer(this, Navigation.resolveRoute(params));
   }

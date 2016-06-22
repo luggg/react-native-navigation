@@ -54,6 +54,7 @@ function startTabBasedApp(params) {
                 <NavigationControllerIOS
                   id={navigatorID}
                   title={tab.title}
+                  titleImage={params.titleImage}
                   component={tab.screen}
                   passProps={{
                     navigatorID: navigatorID,
@@ -117,6 +118,7 @@ function startSingleScreenApp(params) {
         <NavigationControllerIOS
           id={navigatorID}
           title={screen.title}
+          titleImage={params.titleImage}
           component={screen.screen}
           passProps={{
             navigatorID: navigatorID,
@@ -177,6 +179,7 @@ function navigatorPush(navigator, params) {
   passProps.navigatorEventID = navigatorEventID;
   Controllers.NavigationControllerIOS(navigator.navigatorID).push({
     title: params.title,
+    titleImage: params.titleImage,
     component: params.screen,
     animated: params.animated,
     passProps: passProps,
@@ -216,6 +219,7 @@ function navigatorResetTo(navigator, params) {
   passProps.navigatorEventID = navigatorEventID;
   Controllers.NavigationControllerIOS(navigator.navigatorID).resetTo({
     title: params.title,
+    titleImage: params.titleImage,
     component: params.screen,
     animated: params.animated,
     passProps: passProps,
@@ -230,6 +234,13 @@ function navigatorSetTitle(navigator, params) {
     title: params.title
   });
 }
+
+function navigatorSetTitleImage
+  (navigator, params) {
+    Controllers.NavigationControllerIOS(navigator.navigatorID).setTitleImage({
+      titleImage: params.titleImage
+    });
+ }
 
 function navigatorToggleDrawer(navigator, params) {
   const controllerID = navigator.navigatorID.split('_')[0];
@@ -291,6 +302,7 @@ function showModal(params) {
         <NavigationControllerIOS
           id={navigatorID}
           title={params.title}
+          titleImage={params.titleImage}
           component={params.screen}
           passProps={passProps}
           style={navigatorStyle}
@@ -319,5 +331,6 @@ export default {
   dismissModal,
   navigatorSetButtons,
   navigatorSetTitle,
+  navigatorSetTitleImage,
   navigatorToggleDrawer
 }
