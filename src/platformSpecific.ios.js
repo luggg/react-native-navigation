@@ -148,7 +148,12 @@ function _mergeScreenSpecificSettings(screenID, screenInstanceID, params) {
   }
 
   const navigatorEventID = screenInstanceID + '_events';
-  const navigatorButtons = Object.assign({}, screenClass.navigatorButtons);
+  let navigatorButtons;
+  if (params.navigatorButtons) {
+    navigatorButtons = Object.assign({}, params.navigatorButtons);
+  } else {
+    navigatorButtons = Object.assign({}, screenClass.navigatorButtons);
+  }
   if (navigatorButtons.leftButtons) {
     for (let i = 0 ; i < navigatorButtons.leftButtons.length ; i++) {
       navigatorButtons.leftButtons[i].onPress = navigatorEventID;
