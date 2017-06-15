@@ -8,7 +8,7 @@ import PropRegistry from './PropRegistry';
 
 const registeredScreens = {};
 const _allNavigatorEventHandlers = {};
-const _routeResolver = {};
+const _routeResolver = null;
 
 function resolveRoute(params) {
   if (!_routeResolver) return params;
