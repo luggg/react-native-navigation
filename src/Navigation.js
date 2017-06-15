@@ -143,12 +143,15 @@ function startTabBasedApp(params) {
   if (params['tabs']) {
     params['tabs'] = params['tabs'].map(tabdata => resolveRoute(tabdata));
   }
-  return platformSpecific.startTabBasedApp(resolveRoute(params));
+  return platformSpecific.startTabBasedApp(params);
 }
 
 function startSingleScreenApp(params) {
   if (params.routeResolver) _routeResolver = params.routeResolver;
-  return platformSpecific.startSingleScreenApp(resolveRoute(params.screen));
+  if (params['screen']) {
+    params['screen'] = resolveRoute(params.screen);
+  }
+  return platformSpecific.startSingleScreenApp(params);
 }
 
 function setEventHandler(navigatorEventID, eventHandler) {
