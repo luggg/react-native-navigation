@@ -8,6 +8,12 @@ import PropRegistry from './PropRegistry';
 
 const registeredScreens = {};
 const _allNavigatorEventHandlers = {};
+const _routeResolver = {};
+
+function resolveRoute(params) {
+  if (!_routeResolver) return params;
+  return _routeResolver(params);
+}
 
 function registerScreen(screenID, generator) {
   registeredScreens[screenID] = generator;
@@ -28,7 +34,7 @@ function _registerComponentNoRedux(screenID, generator) {
     if (!InternalComponent) {
       console.error(`Navigation: ${screenID} registration result is 'undefined'`);
     }
-    
+
     return class extends Screen {
       static navigatorStyle = InternalComponent.navigatorStyle || {};
       static navigatorButtons = InternalComponent.navigatorButtons || {};
@@ -132,10 +138,12 @@ function dismissInAppNotification(params = {}) {
 }
 
 function startTabBasedApp(params) {
+  if (params.routeResolver) _routeResolver = params.routeResolver;
   return platformSpecific.startTabBasedApp(params);
 }
 
 function startSingleScreenApp(params) {
+  if (params.routeResolver) _routeResolver = params.routeResolver;
   return platformSpecific.startSingleScreenApp(params);
 }
 
@@ -163,6 +171,7 @@ function handleDeepLink(params = {}) {
 }
 
 export default {
+  resolveRoute,
   getRegisteredScreen,
   registerComponent,
   showModal: showModal,

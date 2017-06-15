@@ -25,27 +25,27 @@ class Navigator {
   }
 
   push(params = {}) {
-    return NavigationSpecific.push(this, params);
+    return NavigationSpecific.push(this, Navigation.resolveRoute(params));
   }
 
   pop(params = {}) {
-    return NavigationSpecific.pop(this, params);
+    return NavigationSpecific.pop(this, Navigation.resolveRoute(params));
   }
 
   popToRoot(params = {}) {
-    return NavigationSpecific.popToRoot(this, params);
+    return NavigationSpecific.popToRoot(this, Navigation.resolveRoute(params));
   }
 
   resetTo(params = {}) {
-    return NavigationSpecific.resetTo(this, params);
+    return NavigationSpecific.resetTo(this, Navigation.resolveRoute(params));
   }
 
   showModal(params = {}) {
-    return Navigation.showModal(params);
+    return Navigation.showModal(Navigation.resolveRoute(params));
   }
 
   showLightBox(params = {}) {
-    return Navigation.showLightBox(params);
+    return Navigation.showLightBox(Navigation.resolveRoute(params));
   }
 
   dismissModal(params = {}) {
@@ -53,11 +53,7 @@ class Navigator {
   }
 
   dismissAllModals(params = {}) {
-    return Navigation.dismissAllModals(params);
-  }
-
-  showLightBox(params = {}) {
-    return Navigation.showLightBox(params);
+    return Navigation.dismissModal(params);
   }
 
   dismissLightBox(params = {}) {
