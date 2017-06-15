@@ -12,6 +12,7 @@ const _routeResolver = {};
 
 function resolveRoute(params) {
   if (!_routeResolver) return params;
+  if (typeof _routeResolver !== 'function') return params;
   return _routeResolver(params);
 }
 
@@ -106,7 +107,7 @@ function getRegisteredScreen(screenID) {
 }
 
 function showModal(params = {}) {
-  return platformSpecific.showModal(params);
+  return platformSpecific.showModal(resolveRoute(params));
 }
 
 function dismissModal(params = {}) {
@@ -122,7 +123,7 @@ function showSnackbar(params = {}) {
 }
 
 function showLightBox(params = {}) {
-  return platformSpecific.showLightBox(params);
+  return platformSpecific.showLightBox(resolveRoute(params));
 }
 
 function dismissLightBox(params = {}) {
@@ -139,12 +140,12 @@ function dismissInAppNotification(params = {}) {
 
 function startTabBasedApp(params) {
   if (params.routeResolver) _routeResolver = params.routeResolver;
-  return platformSpecific.startTabBasedApp(params);
+  return platformSpecific.startTabBasedApp(resolveRoute(params));
 }
 
 function startSingleScreenApp(params) {
   if (params.routeResolver) _routeResolver = params.routeResolver;
-  return platformSpecific.startSingleScreenApp(params);
+  return platformSpecific.startSingleScreenApp(resolveRoute(params));
 }
 
 function setEventHandler(navigatorEventID, eventHandler) {
