@@ -140,12 +140,15 @@ function dismissInAppNotification(params = {}) {
 
 function startTabBasedApp(params) {
   if (params.routeResolver) _routeResolver = params.routeResolver;
+  if (params['tabs']) {
+    params['tabs'] = params['tabs'].map(tabdata => resolveRoute(tabdata));
+  }
   return platformSpecific.startTabBasedApp(resolveRoute(params));
 }
 
 function startSingleScreenApp(params) {
   if (params.routeResolver) _routeResolver = params.routeResolver;
-  return platformSpecific.startSingleScreenApp(resolveRoute(params));
+  return platformSpecific.startSingleScreenApp(resolveRoute(params.screen));
 }
 
 function setEventHandler(navigatorEventID, eventHandler) {
