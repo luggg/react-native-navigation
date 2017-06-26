@@ -147,10 +147,8 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     NSString *animationType = actionParams[@"animationType"];
     if ([animationType isEqualToString:@"fade"])
     {
-      CATransition *transition = [CATransition animation];
-      transition.duration = 0.25;
-      transition.type = kCATransitionFade;
-
+      CATransition *transition = [self transitionWithType:kCATransitionReveal subtype:kCATransitionFade];
+      [self.view.layer removeAllAnimations];
       [self.view.layer addAnimation:transition forKey:kCATransition];
       [self pushViewController:viewController animated:NO];
     }
@@ -167,10 +165,8 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     NSString *animationType = actionParams[@"animationType"];
     if ([animationType isEqualToString:@"fade"])
     {
-      CATransition *transition = [CATransition animation];
-      transition.duration = 0.25;
-      transition.type = kCATransitionFade;
-
+      CATransition *transition = [self transitionWithType:kCATransitionReveal subtype:kCATransitionFade];
+      [self.view.layer removeAllAnimations];
       [self.view.layer addAnimation:transition forKey:kCATransition];
       [self popViewControllerAnimated:NO];
     }
@@ -187,10 +183,8 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     NSString *animationType = actionParams[@"animationType"];
     if ([animationType isEqualToString:@"fade"])
     {
-      CATransition *transition = [CATransition animation];
-      transition.duration = 0.25;
-      transition.type = kCATransitionFade;
-
+      CATransition *transition = [self transitionWithType:kCATransitionReveal subtype:kCATransitionFade];
+      [self.view.layer removeAllAnimations];
       [self.view.layer addAnimation:transition forKey:kCATransition];
       [self popToRootViewControllerAnimated:NO];
     }
@@ -233,6 +227,7 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     if ([animationType isEqualToString:@"fade"])
     {
       CATransition *transition = [self transitionWithType:kCATransitionReveal subtype:kCATransitionFade];
+      [self.view.layer removeAllAnimations];
       [self.view.layer addAnimation:transition forKey:kCATransition];
       [self setViewControllers:@[viewController] animated:NO];
     }
@@ -419,15 +414,17 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     return;
   }
 
-  [[NSNotificationCenter defaultCenter] addObserverForName:RCTContentDidAppearNotification
-                                                    object:nil
-                                                     queue:nil
-                                                usingBlock:^(NSNotification * _Nonnull note) {
-                                                  _transitioning = YES;
-                                                  [super pushViewController:viewController animated:animated];
-                                                }];
+  __block id observer = [[NSNotificationCenter defaultCenter]
+                 addObserverForName:RCTContentDidAppearNotification
+                             object:viewController.view
+                              queue:nil
+                         usingBlock:^(NSNotification * _Nonnull note) {
+                           _transitioning = YES;
+                           [super pushViewController:viewController animated:animated];
+                           [[NSNotificationCenter defaultCenter] removeObserver:observer];
+                           observer = nil;
+                         }];
 }
-
 
 #pragma mark - UINavigationControllerDelegate
 

@@ -338,14 +338,17 @@ RCT_EXPORT_METHOD(
         }
     }
 
-    [[NSNotificationCenter defaultCenter] addObserverForName:RCTContentDidAppearNotification
-                                                      object:nil
-                                                       queue:nil
-                                                  usingBlock:^(NSNotification * _Nonnull note) {
-                                                      [[RCCManagerModule lastModalPresenterViewController] presentViewController:controller
-                                                                                                                        animated:![animationType isEqualToString:@"none"]
-                                                                                                                      completion:^(){ resolve(nil); }];
-                                                  }];
+    __block id observer = [[NSNotificationCenter defaultCenter]
+                           addObserverForName:RCTContentDidAppearNotification
+                                       object:nil
+                                        queue:nil
+                                   usingBlock:^(NSNotification * _Nonnull note) {
+                                       [[RCCManagerModule lastModalPresenterViewController] presentViewController:controller
+                                                                                                         animated:![animationType isEqualToString:@"none"]
+                                                                                                       completion:^(){ resolve(nil); }];
+                                       [[NSNotificationCenter defaultCenter] removeObserver:observer];
+                                       observer = nil;
+                                   }];
 }
 
 -(BOOL)viewControllerIsModal:(UIViewController*)viewController
