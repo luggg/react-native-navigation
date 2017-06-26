@@ -232,10 +232,7 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     NSString *animationType = actionParams[@"animationType"];
     if ([animationType isEqualToString:@"fade"])
     {
-      CATransition *transition = [CATransition animation];
-      transition.duration = 0.25;
-      transition.type = kCATransitionFade;
-
+      CATransition *transition = [self transitionWithType:kCATransitionReveal subtype:kCATransitionFade];
       [self.view.layer addAnimation:transition forKey:kCATransition];
       [self setViewControllers:@[viewController] animated:NO];
     }
@@ -303,6 +300,16 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
       [parent updateStyle];
     }
   }
+}
+
+- (CATransition *)transitionWithType:(NSString *)type subtype:(NSString *)subtype {
+  CATransition *transition = [CATransition animation];
+  transition.duration = 0.4f;
+  transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+  transition.type = type;
+  transition.subtype = subtype;
+
+  return transition;
 }
 
 -(void)onButtonPress:(UIBarButtonItem*)barButtonItem
