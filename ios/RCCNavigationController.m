@@ -414,16 +414,9 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     return;
   }
 
-  __block id observer = [[NSNotificationCenter defaultCenter]
-                 addObserverForName:RCTContentDidAppearNotification
-                             object:viewController.view
-                              queue:nil
-                         usingBlock:^(NSNotification * _Nonnull note) {
-                           _transitioning = YES;
-                           [super pushViewController:viewController animated:animated];
-                           [[NSNotificationCenter defaultCenter] removeObserver:observer];
-                           observer = nil;
-                         }];
+  _transitioning = YES;
+
+  [super pushViewController:viewController animated:animated];
 }
 
 #pragma mark - UINavigationControllerDelegate
