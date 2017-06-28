@@ -130,6 +130,12 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
   RCTRootView *reactView = [[RCTRootView alloc] initWithBridge:bridge moduleName:component initialProperties:mergedProps];
   if (!reactView) return nil;
 
+  UIView *loadingView = [[RCCManager sharedInstance] getLoadingView];
+  if (loadingView) {
+    [reactView setLoadingView:loadingView];
+    [[RCCManager sharedInstance] setLoadingView:nil];
+  }
+
   self = [super init];
   if (!self) return nil;
 

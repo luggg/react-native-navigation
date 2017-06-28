@@ -7,6 +7,7 @@
 @property (nonatomic, strong) NSMutableDictionary *modulesRegistry;
 @property (nonatomic, strong) RCTBridge *sharedBridge;
 @property (nonatomic, strong) NSURL *bundleURL;
+@property (nonatomic, strong) UIView *_loadingView;
 @end
 
 @implementation RCCManager
@@ -209,6 +210,16 @@
   UIApplication *app = [UIApplication sharedApplication];
   UIWindow *window = (app.keyWindow != nil) ? app.keyWindow : app.windows[0];
   return window;
+}
+
+-(UIView*)getLoadingView
+{
+  return self._loadingView;
+}
+
+-(void)setLoadingView:(UIView *)loadingView
+{
+  self._loadingView = loadingView;
 }
 
 #pragma mark - RCTBridgeDelegate methods
