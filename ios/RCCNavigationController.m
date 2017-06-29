@@ -13,6 +13,7 @@
 {
   BOOL _transitioning;
   NSMutableArray *_queuedViewControllers;
+  id _observer;
 }
 
 NSString const *CALLBACK_ASSOCIATED_KEY = @"RCCNavigationController.CALLBACK_ASSOCIATED_KEY";
@@ -143,7 +144,12 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     {
       [self setButtons:rightButtons viewController:viewController side:@"right" animated:NO];
     }
-
+    
+    if (_observer) {
+      [[NSNotificationCenter defaultCenter] removeObserver:_observer];
+      _observer = nil;
+    }
+    
     NSString *animationType = actionParams[@"animationType"];
     if ([animationType isEqualToString:@"fade"])
     {
@@ -222,7 +228,12 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     }
 
     BOOL animated = actionParams[@"animated"] ? [actionParams[@"animated"] boolValue] : YES;
-
+    
+    if (_observer) {
+      [[NSNotificationCenter defaultCenter] removeObserver:_observer];
+      _observer = nil;
+    }
+    
     NSString *animationType = actionParams[@"animationType"];
     if ([animationType isEqualToString:@"fade"])
     {
@@ -415,8 +426,19 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
   }
 
   _transitioning = YES;
-
-  [super pushViewController:viewController animated:animated];
+  
+  RCTRootView *rootView = (RCTRootView *)viewController.view;
+  
+  _observer = [[NSNotificationCenter defaultCenter]
+               addObserverForName:RCTContentDidAppearNotification
+               object:viewController.view
+               queue:nil
+               usingBlock:^(NSNotification * _Nonnull note) {
+                 [super pushViewController:viewController animated:animated];
+                 [[NSNotificationCenter defaultCenter] removeObserver:_observer];
+                 _observer = nil;
+               }];
+  
 }
 
 #pragma mark - UINavigationControllerDelegate
