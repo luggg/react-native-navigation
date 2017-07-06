@@ -81,6 +81,7 @@ public class StyleParamsParser {
         result.forceTitlesDisplay = getBoolean("forceTitlesDisplay", getDefaultForceTitlesDisplay());
 
         result.bottomTabFontFamily = getFont("bottomTabFontFamily", getDefaultBottomTabsFontFamily());
+        result.showLogo = getBoolean("showLogo", false);
 
         return result;
     }

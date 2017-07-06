@@ -121,4 +121,5 @@ public class StyleParams {
     public Font bottomTabFontFamily;
 
     public Color navigationBarColor;
+    public boolean showLogo;
 }
