@@ -3,16 +3,25 @@ package com.reactnativenavigation.views;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.TextView;
 
+import com.reactnativenavigation.R;
 import com.reactnativenavigation.params.BaseScreenParams;
 import com.reactnativenavigation.params.BaseTitleBarButtonParams;
 import com.reactnativenavigation.params.StyleParams;
@@ -78,6 +87,23 @@ public class TitleBar extends Toolbar {
         colorOverflowButton(params);
         setBackground(params);
         centerTitle(params);
+
+        if (params.showLogo) {
+            ViewUtils.runOnPreDraw(this, new Runnable() {
+                @Override
+                public void run() {
+                    Log.d("Lugg", "Drawing logo");
+                    int height = getHeight() - 60; // leave a little padding
+                    Bitmap logo = BitmapFactory.decodeResource(getResources(), R.drawable.logo);
+                    Bitmap header = Bitmap.createBitmap(getWidth(), getHeight(), logo.getConfig());
+                    Bitmap logoScaled = Bitmap.createScaledBitmap(logo, logo.getWidth() * height / logo.getHeight(), height, true);
+                    Canvas canvas = new Canvas(header);
+                    canvas.drawBitmap(logoScaled, (getWidth() / 2) - (logoScaled.getWidth() / 2), 35, null);
+                    BitmapDrawable background = new BitmapDrawable(getResources(), header);
+                    setBackground(background);
+                }
+            });
+        }
     }
 
     public void setVisibility(boolean titleBarHidden) {
