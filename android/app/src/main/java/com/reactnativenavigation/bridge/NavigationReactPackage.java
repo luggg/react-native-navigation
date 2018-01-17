@@ -13,19 +13,16 @@ import java.util.List;
 
 public class NavigationReactPackage implements ReactPackage {
 
-    @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         return Arrays.<NativeModule>asList(
                 new NavigationReactModule(reactContext)
         );
     }
 
-    @Override
     public List<Class<? extends JavaScriptModule>> createJSModules() {
         return Collections.emptyList();
     }
 
-    @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
         return Arrays.<ViewManager>asList(
                 new SharedElementTransitionManager()
